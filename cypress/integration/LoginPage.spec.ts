@@ -12,20 +12,7 @@ describe("Login", () => {
     cy.visit('/login');
   });
 
-  it("should allow user to login", () => {
-    cy.get('#username').type(username);
-    cy.get('#password').type(password);
-    cy.get('button[type="submit"]').click();
 
-    cy.url().should('not.contain', '/login');
-  });
-
-  it("should allow user to login by pressing enter", () => {
-    cy.get('#username').type(username);
-    cy.get('#password').type(password).type('{enter}');
-
-    cy.url().should('not.contain', '/login');
-  });
 
   it("should require a user name to login", () => {
     cy.get('#password').type(password);
@@ -47,7 +34,21 @@ describe("Login", () => {
     submitForm();
 
     cy.url().should('contain', '/login');
-
     cy.get('[data-testid="login-status-message"]').should("be.visible")
+  });
+
+  it("should allow user to login", () => {
+    cy.get('#username').type(username);
+    cy.get('#password').type(password);
+    cy.get('button[type="submit"]').click();
+
+    cy.url().should('not.contain', '/login');
+  });
+
+  it("should allow user to login by pressing enter", () => {
+    cy.get('#username').type(username);
+    cy.get('#password').type(password).type('{enter}');
+
+    cy.url().should('not.contain', '/login');
   });
 });
