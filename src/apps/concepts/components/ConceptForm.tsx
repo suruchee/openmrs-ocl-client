@@ -196,6 +196,7 @@ interface Props {
   supportLegacyMappings?: boolean;
   defaultLocale?: string;
   supportedLocales?: string[];
+  canCustomize: boolean;
 }
 
 const ConceptForm: React.FC<Props> = ({
@@ -209,7 +210,8 @@ const ConceptForm: React.FC<Props> = ({
   conceptClass,
   supportLegacyMappings = true,
   defaultLocale,
-  supportedLocales
+  supportedLocales,
+  canCustomize,
 }) => {
   const allowEditing = context === CONTEXT.edit || context === CONTEXT.create;
   const allowIdEdits = context === CONTEXT.create;
@@ -419,7 +421,7 @@ const ConceptForm: React.FC<Props> = ({
                     errors={errors.names}
                     arrayHelpers={arrayHelpers}
                     isSubmitting={isSubmitting}
-                    editing={allowEditing}
+                    editing={!canCustomize ? allowEditing : !allowEditing}
                     supportedLocales={
                       defaultLocale && supportedLocales
                         ? [defaultLocale, ...supportedLocales].map(locale =>
@@ -450,7 +452,7 @@ const ConceptForm: React.FC<Props> = ({
                     errors={errors.descriptions}
                     arrayHelpers={arrayHelpers}
                     isSubmitting={isSubmitting}
-                    editing={allowEditing}
+                    editing={!canCustomize ? allowEditing : !allowEditing}
                     supportedLocales={
                       defaultLocale && supportedLocales
                         ? [defaultLocale, ...supportedLocales].map(locale =>
@@ -517,7 +519,7 @@ const ConceptForm: React.FC<Props> = ({
                         handleChange={handleChange}
                         title="Set Member"
                         fixedMappingType={MAP_TYPE_CONCEPT_SET}
-                        editing={allowEditing}
+                        editing={!canCustomize ? allowEditing : !allowEditing}
                       />
                     )}
                   </FieldArray>

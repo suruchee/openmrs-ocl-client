@@ -167,6 +167,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
             }
             defaultLocale={defaultLocale}
             supportedLocales={supportedLocales}
+            canCustomize={true}
           />
         </Grid>
 

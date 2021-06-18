@@ -11,7 +11,12 @@ import { APIConcept, apiConceptToConcept, APIMapping } from "../types";
 import { useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
 import Header from "../../../components/Header";
-import { APIOrg, APIProfile, profileSelector } from "../../authentication";
+import {
+  APIOrg,
+  APIProfile,
+  canModifyContainer,
+  profileSelector,
+} from "../../authentication";
 import { orgsSelector } from "../../authentication/redux/reducer";
 import { CONTEXT, ProgressOverlay, useQueryParams } from "../../../utils";
 import { recursivelyAddConceptsToDictionaryAction } from "../../dictionaries/redux";
@@ -49,6 +54,7 @@ const ViewConceptPage: React.FC<Props> = ({
     dictionaryToAddTo: string;
   }>();
   const conceptSource = concept?.source_url;
+  const canCustomize = canModifyContainer(ownerType, owner, profile, usersOrgs);
 
   useEffect(() => {
     retrieveConcept(url);
@@ -75,6 +81,7 @@ const ViewConceptPage: React.FC<Props> = ({
               context={CONTEXT.view}
               savedValues={apiConceptToConcept(concept, mappings)}
               errors={errors}
+              canCustomize={canCustomize}
             />
           </Grid>
           {concept && conceptSource && (

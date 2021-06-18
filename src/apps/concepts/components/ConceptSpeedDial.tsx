@@ -7,6 +7,9 @@ import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 import { EditButton } from "../../containers/components/EditButton";
 import { recursivelyAddConceptsToDictionaryAction } from "../../dictionaries";
 import { APIConcept } from "../types";
+import { EditOutlined as EditIcon } from "@material-ui/icons";
+import { Button } from "@material-ui/core";
+import CustomizeConceptDialog from "./CustomizeConceptDialog";
 
 interface Props {
   concept: APIConcept;
@@ -39,9 +42,15 @@ export const ConceptSpeedDial: React.FC<Props> = ({
 
   // we can modify the concept and it lives in our dictionary's linked source
   const showEditConceptButton =
-    canModifyContainer(ownerType, owner, profile, usersOrgs) &&
-    conceptSource &&
-    concept?.url.includes(conceptSource);
+    conceptSource && concept?.url.includes(conceptSource);
+
+  const showCustomizeConceptButton = canModifyContainer(
+    ownerType,
+    owner,
+    profile,
+    usersOrgs
+  );
+  const handleClose = () => setOpen(false);
 
   // if we are looking at a concept from an existing dictionary, we can add it
   // to our source
@@ -62,13 +71,31 @@ export const ConceptSpeedDial: React.FC<Props> = ({
   if (!showEditConceptButton && !showAddConceptButton) {
     return null;
   }
-
   if (!showAddConceptButton) {
     return (
-      <EditButton
-        url={`${conceptUrl}edit/?linkedDictionary=${linkedDictionary}`}
-        title={`Edit ${concept.names ? concept.names[0].name : "concept"}`}
-      />
+      <>
+        {showCustomizeConceptButton ? (
+          <EditButton
+            url={`${conceptUrl}edit/?linkedDictionary=${linkedDictionary}`}
+            title={`Edit ${concept.names ? concept.names[0].name : "concept"}`}
+          />
+        ) : (
+          <>
+            <Button onClick={() => setOpen(true)}>
+              <Tooltip title={"Customize public concept"}>
+                <Fab color="primary" className="fab">
+                  <EditIcon />
+                </Fab>
+              </Tooltip>
+            </Button>
+            <CustomizeConceptDialog
+              open={open}
+              handleClose={handleClose}
+              url={`${conceptUrl}edit/?linkedDictionary=${linkedDictionary}`}
+            />
+          </>
+        )}
+      </>
     );
   } else if (!showAddConceptButton) {
     return (
