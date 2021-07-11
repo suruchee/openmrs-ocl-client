@@ -241,3 +241,62 @@ Cypress.Commands.add(
     });
   }
 );
+Cypress.Commands.add(
+  "createVersion",
+  (
+    dictionary: string = `TD-${nanoid()}`,
+    version: string = `Ver-${nanoid()}`,
+    username: string = Cypress.env("USERNAME") || "admin"
+  ) => {
+    getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/users/${username}/collections/${dictionary}/`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "POST",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/users/${username}/collections/versions`,
+              body: {
+                id: dictionary,
+                release: true,
+                description: "",
+                preferred_source: "CIEL"
+              }
+            });
+          }
+        })
+    );
+
+    return cy.wrap(version);
+  }
+);
+Cypress.Commands.add(
+  "getVersion",
+  (
+    dictionary: string,
+    version: string,
+    username: string = Cypress.env("USERNAME") || "admin"
+  ) => {
+    return getAuthToken().then(authToken => {
+      return cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/users/${username}/collections/${dictionary}/`
+        })
+        .its("body");
+    });
+  }
+);

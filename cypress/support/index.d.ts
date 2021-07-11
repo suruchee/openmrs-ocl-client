@@ -25,5 +25,7 @@ declare namespace Cypress {
       isCleanup?: boolean
     ): Chainable<Subject>;
     getSource(source: string, username?: string): Chainable<Subject>;
+    createVersion(id?: string, released?: boolean): Chainable<Subject>;
+    getVersion(id?: string, released?: boolean): Chainable<Subject>;
   }
 }

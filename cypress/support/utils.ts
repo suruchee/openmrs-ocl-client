@@ -21,5 +21,19 @@ export const getAuthToken = () =>
     .its("token")
     .then(token => `Token ${token}`);
 export const getDictionaryId = () => Cypress.env("dictionaryId");
-export const setDictionaryId = (dictionaryId: string) => Cypress.env("dictionaryId", dictionaryId);
+export const setDictionaryId = (dictionaryId: string) =>
+  Cypress.env("dictionaryId", dictionaryId);
+
+export const getVersionId = () => Cypress.env("versionId");
+export const setVersionId = (versionId: string) =>
+  Cypress.env("versionId", versionId);
+
+export const getReleased = () => Cypress.env("released");
+export const setReleased = (released: boolean) =>
+  Cypress.env("released", released);
+
+export const getSubscriptionURL = () => Cypress.env("subscriptionURL");
+export const setSubscriptionURL = (subscriptionURL: string) =>
+  Cypress.env("subscriptionURL", subscriptionURL);
+
 export const getUser = () => Cypress.env("USER") || "admin";
